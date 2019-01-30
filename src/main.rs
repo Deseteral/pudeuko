@@ -3,6 +3,8 @@
 use rocket::{self, get, routes, Config};
 use std::env;
 
+mod controllers;
+
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
@@ -21,5 +23,6 @@ fn main() {
     let config = create_configuration();
     rocket::custom(config)
         .mount("/", routes![index])
+        .mount("/items", routes![controllers::items::items])
         .launch();
 }
