@@ -1,15 +1,10 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use rocket::{self, get, routes, Config};
+use rocket::{self, routes, Config};
 use std::env;
 
 mod controllers;
 mod domain;
-
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
 
 fn create_configuration() -> Config {
     let mut config = Config::active().expect("could not load configuration");
@@ -23,7 +18,6 @@ fn create_configuration() -> Config {
 fn main() {
     let config = create_configuration();
     rocket::custom(config)
-        .mount("/", routes![index])
         .mount("/items", routes![controllers::post_items])
         .launch();
 }
