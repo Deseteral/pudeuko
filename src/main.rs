@@ -4,6 +4,7 @@ use rocket::{self, get, routes, Config};
 use std::env;
 
 mod controllers;
+mod domain;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -23,6 +24,6 @@ fn main() {
     let config = create_configuration();
     rocket::custom(config)
         .mount("/", routes![index])
-        .mount("/items", routes![controllers::items::items])
+        .mount("/items", routes![controllers::post_items])
         .launch();
 }
