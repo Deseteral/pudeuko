@@ -8,7 +8,7 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-fn configure() -> Config {
+fn create_configuration() -> Config {
     let mut config = Config::active().expect("could not load configuration");
     if let Ok(port_str) = env::var("PORT") {
         let port = port_str.parse().expect("could not parse PORT");
@@ -18,5 +18,8 @@ fn configure() -> Config {
 }
 
 fn main() {
-    rocket::custom(configure()).mount("/", routes![index]).launch();
+    let config = create_configuration();
+    rocket::custom(config)
+        .mount("/", routes![index])
+        .launch();
 }
