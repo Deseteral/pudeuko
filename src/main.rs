@@ -5,6 +5,7 @@ use std::env;
 
 mod controllers;
 mod domain;
+mod dropbox_client;
 
 fn create_configuration() -> Config {
     let mut config = Config::active().expect("could not load configuration");
@@ -18,6 +19,6 @@ fn create_configuration() -> Config {
 fn main() {
     let config = create_configuration();
     rocket::custom(config)
-        .mount("/items", routes![controllers::post_items])
+        .mount("/items", routes![controllers::get_items, controllers::post_items])
         .launch();
 }
