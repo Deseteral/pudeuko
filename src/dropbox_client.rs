@@ -24,6 +24,6 @@ pub fn fetch_pudeuko() -> ItemList {
    items
 }
 
-pub fn upload_pudeuko(list: ItemList) {
+pub fn upload_pudeuko(list: &ItemList) {
 
 }

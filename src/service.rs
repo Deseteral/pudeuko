@@ -1,6 +1,6 @@
 use crate::domain::{ContentDTO, Item, ItemList, Link};
 
-pub fn convert_content_to_item(content: ContentDTO) -> Item {
+pub fn convert_content_to_item(content: &ContentDTO) -> Item {
     Item {
         created_at: "".to_string(),
         link: Link { url: "".to_string() },
@@ -8,9 +8,8 @@ pub fn convert_content_to_item(content: ContentDTO) -> Item {
     }
 }
 
-pub fn add_item_to_list(item: Item, mut list: ItemList) -> ItemList {
+pub fn add_item_to_list(item: Item, mut list: &ItemList) {
     list.insert(0, item);
-    list
 }
 
 #[cfg(test)]
@@ -41,7 +40,7 @@ mod tests {
         };
 
         // when
-        let list = add_item_to_list(item, list);
+        add_item_to_list(item, &list);
 
         // then
         assert_eq!(list.len(), 3);
