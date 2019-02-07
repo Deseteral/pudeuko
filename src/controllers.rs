@@ -10,7 +10,7 @@ pub fn get_items() -> String {
     json
 }
 
-#[post("/", format = "application/json", data = "<items>")]
-pub fn post_items(items: Json<ContentDTO>) -> String {
+#[post("/", format = "application/json", data = "<content>")]
+pub fn post_item(content: Json<ContentDTO>) -> String {
     "".to_string()
 }

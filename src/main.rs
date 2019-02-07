@@ -19,6 +19,6 @@ fn create_configuration() -> Config {
 fn main() {
     let config = create_configuration();
     rocket::custom(config)
-        .mount("/items", routes![controllers::get_items, controllers::post_items])
+        .mount("/items", routes![controllers::get_items, controllers::post_item])
         .launch();
 }
