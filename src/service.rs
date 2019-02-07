@@ -8,7 +8,7 @@ pub fn convert_content_to_item(content: &ContentDTO) -> Item {
     }
 }
 
-pub fn add_item_to_list(item: Item, mut list: &ItemList) {
+pub fn add_item_to_list(item: Item, list: &mut ItemList) {
     list.insert(0, item);
 }
 
@@ -20,7 +20,7 @@ mod tests {
     #[test]
     fn should_add_item_to_the_beginning_of_the_list() {
         // given
-        let list: ItemList = vec![
+        let mut list: ItemList = vec![
             Item {
                 created_at: String::from("2018-02-07T20:43:44"),
                 link: Link { url: String::from("https://example.com") },
@@ -40,7 +40,7 @@ mod tests {
         };
 
         // when
-        add_item_to_list(item, &list);
+        add_item_to_list(item, &mut list);
 
         // then
         assert_eq!(list.len(), 3);

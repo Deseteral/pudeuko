@@ -16,8 +16,8 @@ pub fn post_item(content: Json<ContentDTO>) -> String {
     let item = service::convert_content_to_item(&content.0);
     let item_json = serde_json::to_string(&item).unwrap();
 
-    let list = dropbox_client::fetch_pudeuko();
-    service::add_item_to_list(item, &list);
+    let mut list = dropbox_client::fetch_pudeuko();
+    service::add_item_to_list(item, &mut list);
 
     dropbox_client::upload_pudeuko(&list);
 
