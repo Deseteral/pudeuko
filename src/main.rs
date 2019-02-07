@@ -6,6 +6,7 @@ use std::env;
 mod controllers;
 mod domain;
 mod dropbox_client;
+mod service;
 
 fn create_configuration() -> Config {
     let mut config = Config::active().expect("could not load configuration");

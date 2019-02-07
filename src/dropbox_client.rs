@@ -23,3 +23,7 @@ pub fn fetch_pudeuko() -> ItemList {
    let items: ItemList = serde_json::from_str(&body).unwrap();
    items
 }
+
+pub fn upload_pudeuko(list: ItemList) {
+
+}
