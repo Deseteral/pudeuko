@@ -2,9 +2,9 @@ use crate::domain::{ContentDTO, Item, ItemList, Link};
 
 pub fn convert_content_to_item(content: &ContentDTO) -> Item {
     Item {
+        text: content.text.to_owned(),
+        link: Link { url: content.text.to_owned() },
         created_at: "".to_string(),
-        link: Link { url: "".to_string() },
-        text: "".to_string(),
     }
 }
 
@@ -14,8 +14,21 @@ pub fn add_item_to_list(item: Item, list: &mut ItemList) {
 
 #[cfg(test)]
 mod tests {
-    use crate::domain::{Item, ItemList, Link};
-    use super::add_item_to_list;
+    use crate::domain::{ContentDTO, Item, ItemList, Link};
+    use super::{convert_content_to_item, add_item_to_list};
+
+    #[test]
+    fn should_create_item_from_content_text() {
+        // given
+        let content = ContentDTO { text: String::from("https://example.com") };
+
+        // when
+        let item = convert_content_to_item(&content);
+
+        // then
+        assert_eq!(item.text, "https://example.com");
+        assert_eq!(item.link.url, "https://example.com");
+    }
 
     #[test]
     fn should_add_item_to_the_beginning_of_the_list() {
