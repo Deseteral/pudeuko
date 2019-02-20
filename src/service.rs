@@ -1,10 +1,14 @@
+use chrono::{DateTime, Utc};
 use crate::domain::{ContentDTO, Item, ItemList, Link};
 
 pub fn convert_content_to_item(content: &ContentDTO) -> Item {
+    let now: DateTime<Utc> = Utc::now();
+    let created_at = now.to_rfc3339();
+
     Item {
         text: content.text.to_owned(),
         link: Link { url: content.text.to_owned() },
-        created_at: "".to_string(),
+        created_at,
     }
 }
 
