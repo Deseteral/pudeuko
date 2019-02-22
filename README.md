@@ -1,7 +1,7 @@
 # pudeuko
 [![Build Status](https://travis-ci.org/Deseteral/pudeuko.svg?branch=master)](https://travis-ci.org/Deseteral/pudeuko)
 
-REST service for storing quick links you wish to check out later.
+REST service for storing internet things (or... links 🤔) you wish to check out later.
 
 *Written in Rust using Rocket framework.*
 
