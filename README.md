@@ -36,7 +36,7 @@ To deploy this app on Heroku you have to set a Rust buildpack:
 heroku apps:create
 heroku buildpacks:set emk/rust
 git push heroku master
-``
+```
 
 ## License
 This project is licensed under the [MIT license](LICENSE).
