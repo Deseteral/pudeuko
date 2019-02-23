@@ -40,11 +40,13 @@ mod tests {
         // given
         let mut list: ItemList = vec![
             Item {
+                id: String::from("test-id-1"),
                 created_at: String::from("2018-02-07T20:43:44"),
                 link: Link { url: String::from("https://example.com") },
                 text: String::from("Some link"),
             },
             Item {
+                id: String::from("test-id-2"),
                 created_at: String::from("2018-01-29T21:10:00"),
                 link: Link { url: String::from("https://example.com/second") },
                 text: String::from("Second link"),
@@ -52,6 +54,7 @@ mod tests {
         ];
 
         let item = Item {
+            id: String::from("test-id-3"),
             created_at: String::from("2018-02-10T10:00:00"),
             link: Link { url: String::from("https://example.com/new-link") },
             text: String::from("Next link"),
@@ -62,8 +65,8 @@ mod tests {
 
         // then
         assert_eq!(list.len(), 3);
-        assert_eq!(list[0].text, String::from("Next link"));
-        assert_eq!(list[1].text, String::from("Some link"));
-        assert_eq!(list[2].text, String::from("Second link"));
+        assert_eq!(list[0].id, String::from("test-id-3"));
+        assert_eq!(list[1].id, String::from("test-id-1"));
+        assert_eq!(list[2].id, String::from("test-id-2"));
     }
 }
