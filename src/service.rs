@@ -6,6 +6,7 @@ pub fn convert_content_to_item(content: &ContentDTO) -> Item {
     let created_at = now.to_rfc3339();
 
     Item {
+        id: nanoid::generate(8),
         text: content.text.to_owned(),
         link: Link { url: content.text.to_owned() },
         created_at,
