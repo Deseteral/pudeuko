@@ -5,6 +5,7 @@ pub type ItemList = Vec<Item>;
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Item {
+    pub id: String,
     pub created_at: String,
     pub link: Link,
     pub text: String,
