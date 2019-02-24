@@ -31,6 +31,7 @@ mod tests {
         let item = convert_content_to_item(&content);
 
         // then
+        assert_eq!(item.id.len(), 8);
         assert_eq!(item.text, "https://example.com");
         assert_eq!(item.link.url, "https://example.com");
     }
