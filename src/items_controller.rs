@@ -5,30 +5,26 @@ use crate::dropbox_client;
 use crate::service;
 
 #[get("/")]
-pub fn get_items() -> String {
+pub fn get_items() -> Json<ItemList> {
     let list: ItemList = dropbox_client::fetch_pudeuko();
-    let json = serde_json::to_string(&list).unwrap();
-    json
+    Json(list)
 }
 
 #[post("/", format = "application/json", data = "<content>")]
-pub fn post_item(content: Json<ContentDTO>) -> String {
+pub fn post_item(content: Json<ContentDTO>) -> Json<Item> {
     let item = service::convert_content_to_item(&content.0);
-    let item_json = serde_json::to_string(&item).unwrap();
-
     let mut list = dropbox_client::fetch_pudeuko();
-    service::add_item_to_list(item, &mut list);
 
+    service::add_item_to_list(item.clone(), &mut list);
     dropbox_client::upload_pudeuko(&list);
 
-    item_json
+    Json(item)
 }
 
 #[get("/<id>")]
-pub fn get_item(id: String) -> String {
+pub fn get_item(id: String) -> Option<Json<Item>> {
     let list = dropbox_client::fetch_pudeuko();
-    let item: &Item = service::find_item_by_id(id, &list).unwrap();
-    let item_json = serde_json::to_string(item).unwrap();
+    let item = service::find_item_by_id(id, &list);
 
-    item_json
+    item.map(|item| Json(item))
 }
