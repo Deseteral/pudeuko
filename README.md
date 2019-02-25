@@ -24,7 +24,7 @@ Example body: `{ "text": "Check out this link https://example.com/cool_content" 
 Parses string content containing link to save. That link is being transformed into an item and saved
 to data storage.
 
-`GET /items/:id` \
+`GET /items/<id>` \
 Returns an item with for given `id`
 
 ## Data storage
