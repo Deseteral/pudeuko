@@ -3,7 +3,7 @@
 use rocket::{self, routes, Config};
 use std::env;
 
-mod controllers;
+mod items_controller;
 mod domain;
 mod dropbox_client;
 mod service;
@@ -20,6 +20,10 @@ fn create_configuration() -> Config {
 fn main() {
     let config = create_configuration();
     rocket::custom(config)
-        .mount("/items", routes![controllers::get_items, controllers::post_item, controllers::get_item ])
+        .mount("/items", routes![
+            items_controller::get_items,
+            items_controller::post_item,
+            items_controller::get_item
+        ])
         .launch();
 }
