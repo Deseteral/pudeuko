@@ -1,30 +1,24 @@
-use rocket::{self, get, post};
+use rocket::{self, get, post, State};
 use rocket_contrib::json::{Json};
 use crate::domain::{ItemList, Item, ContentDTO};
-use crate::dropbox_client;
-use crate::service;
+use crate::pudeuko_service::PudeukoService;
 
 #[get("/")]
-pub fn get_items() -> Json<ItemList> {
-    let list: ItemList = dropbox_client::fetch_pudeuko();
+pub fn get_items(service: State<PudeukoService>) -> Json<ItemList> {
+    let list = service.get_all();
     Json(list)
 }
 
 #[post("/", format = "application/json", data = "<content>")]
-pub fn post_item(content: Json<ContentDTO>) -> Json<Item> {
-    let item = service::convert_content_to_item(&content.0);
-    let mut list = dropbox_client::fetch_pudeuko();
-
-    service::add_item_to_list(item.clone(), &mut list);
-    dropbox_client::upload_pudeuko(&list);
-
+pub fn post_item(content: Json<ContentDTO>, service: State<PudeukoService>) -> Json<Item> {
+    let item = Item::from(content.0);
+    service.add_item(item.clone());
     Json(item)
 }
 
 #[get("/<id>")]
-pub fn get_item(id: String) -> Option<Json<Item>> {
-    let list = dropbox_client::fetch_pudeuko();
-    let item = service::find_item_by_id(id, &list);
-
-    item.map(|item| Json(item))
+pub fn get_item(id: String, service: State<PudeukoService>) -> Option<Json<Item>> {
+    service
+        .get_item_by_id(id)
+        .map(|item| Json(item))
 }
