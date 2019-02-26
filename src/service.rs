@@ -19,7 +19,7 @@ pub fn add_item_to_list(item: Item, list: &mut ItemList) {
 
 pub fn find_item_by_id(id: String, list: &ItemList) -> Option<Item> {
     list.iter()
-        .find(|&x| x.id == id)
+        .find(|&item| item.id == id)
         .map(|item| item.clone())
 }
 

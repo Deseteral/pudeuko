@@ -23,7 +23,7 @@ fn main() {
         .mount("/items", routes![
             items_controller::get_items,
             items_controller::post_item,
-            items_controller::get_item
+            items_controller::get_item,
         ])
         .launch();
 }
