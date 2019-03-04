@@ -1,6 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 use chrono::{Utc};
-use crate::domain::{Item, Link};
+use crate::pudeuko::domain::{Item, Link};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ContentDTO {

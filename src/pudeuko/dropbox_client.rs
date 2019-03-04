@@ -1,7 +1,7 @@
 use serde_json::json;
 use reqwest::{Client, ClientBuilder};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
-use crate::domain::{ItemList};
+use super::domain::{ItemList};
 
 const DROPBOX_FILE_PATH: &'static str = "/pudeuko/data.json";
 const DROPBOX_DOWNLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/download";
