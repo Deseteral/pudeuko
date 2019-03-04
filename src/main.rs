@@ -1,8 +1,8 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 mod config;
+mod api;
 mod domain;
-mod items_controller;
 mod pudeuko_service;
 mod dropbox_client;
 
@@ -16,9 +16,9 @@ fn rocket(port: u16, pudeuko_service: PudeukoService) -> Rocket {
     rocket::custom(config)
         .manage(pudeuko_service)
         .mount("/items", routes![
-            items_controller::get_items,
-            items_controller::post_item,
-            items_controller::get_item,
+            api::handlers::get_items,
+            api::handlers::post_item,
+            api::handlers::get_item,
         ])
 }
 
