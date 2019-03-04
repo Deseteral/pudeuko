@@ -1,12 +1,13 @@
-use crate::domain::{ItemList, Item};
-use crate::dropbox_client::DropboxClient;
+use super::domain::{ItemList, Item};
+use super::dropbox_client::DropboxClient;
 
 pub struct PudeukoService {
     client: DropboxClient,
 }
 
 impl PudeukoService {
-    pub fn new(client: DropboxClient) -> Self {
+    pub fn new(dropbox_token: &String) -> Self {
+        let client = DropboxClient::new(dropbox_token);
         Self { client }
     }
 

@@ -1,13 +1,11 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 mod config;
+mod pudeuko;
 mod api;
-mod domain;
-mod pudeuko_service;
-mod dropbox_client;
 
 use rocket::{self, Rocket, routes};
-use pudeuko_service::PudeukoService;
+use pudeuko::pudeuko_service::PudeukoService;
 
 fn rocket(port: u16, pudeuko_service: PudeukoService) -> Rocket {
     let mut config = rocket::Config::active().expect("Could not load configuration");
@@ -24,8 +22,7 @@ fn rocket(port: u16, pudeuko_service: PudeukoService) -> Rocket {
 
 fn main() {
     let config = config::Config::load_from_env();
-    let dropbox_client = dropbox_client::DropboxClient::new(&config.dropbox_token);
-    let pudeuko_service = pudeuko_service::PudeukoService::new(dropbox_client);
+    let pudeuko_service = PudeukoService::new(&config.dropbox_token);
 
     rocket(config.port, pudeuko_service).launch();
 }

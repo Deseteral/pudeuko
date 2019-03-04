@@ -15,5 +15,3 @@ pub struct Item {
 pub struct Link {
     pub url: String,
 }
-
-
