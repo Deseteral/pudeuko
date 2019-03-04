@@ -14,7 +14,7 @@ pub struct DropboxClient {
 }
 
 impl DropboxClient {
-    pub fn new(dropbox_token: String) -> Self {
+    pub fn new(dropbox_token: &String) -> Self {
         let mut default_headers = HeaderMap::new();
         default_headers.insert(AUTHORIZATION, format!("Bearer {}", dropbox_token).parse().unwrap());
 
