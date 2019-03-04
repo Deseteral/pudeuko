@@ -9,7 +9,7 @@ impl Config {
     pub fn load_from_env() -> Self {
         let port = match env::var("PORT") {
             Ok(port_str) => port_str.parse(),
-            Err(_) => Ok(9000),
+            Err(_) => Ok(8000),
         }.expect("Could not parse PORT");
 
         let dropbox_token = env::var("DROPBOX_TOKEN")

@@ -1,6 +1,7 @@
 use rocket::{self, get, post, State};
 use rocket_contrib::json::{Json};
-use crate::domain::{ItemList, Item, ContentDTO};
+use crate::api::domain::{ContentDTO};
+use crate::domain::{ItemList, Item};
 use crate::pudeuko_service::PudeukoService;
 
 #[get("/")]
