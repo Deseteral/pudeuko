@@ -1,3 +1,4 @@
+use std::sync::Mutex;
 use rocket::{self, get, post, State};
 use rocket_contrib::json::{Json};
 use super::domain::{ContentDTO};

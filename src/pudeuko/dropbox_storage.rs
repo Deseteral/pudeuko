@@ -2,18 +2,19 @@ use serde_json::json;
 use reqwest::{Client, ClientBuilder};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
 use super::domain::{ItemList};
+use super::storage::Storage;
 
 const DROPBOX_FILE_PATH: &'static str = "/pudeuko/data.json";
 const DROPBOX_DOWNLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/download";
 const DROPBOX_UPLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/upload";
 
-pub struct DropboxClient {
+pub struct DropboxStorage {
     client: Client,
     download_headers: HeaderMap,
     upload_headers: HeaderMap,
 }
 
-impl DropboxClient {
+impl DropboxStorage {
     pub fn new(dropbox_token: &String) -> Self {
         let mut default_headers = HeaderMap::new();
         default_headers.insert(AUTHORIZATION, format!("Bearer {}", dropbox_token).parse().unwrap());
@@ -37,8 +38,10 @@ impl DropboxClient {
             upload_headers,
         }
     }
+}
 
-    pub fn fetch(self: &Self) -> ItemList {
+impl Storage for DropboxStorage {
+    fn read(self: &Self) -> ItemList {
         let body = self.client.get(DROPBOX_DOWNLOAD_URL)
             .headers(self.download_headers.clone())
             .send().unwrap()
@@ -48,7 +51,7 @@ impl DropboxClient {
         items
     }
 
-    pub fn upload(self: &Self, list: &ItemList) {
+    fn write(self: &Self, list: &ItemList) {
         let json = serde_json::to_string(list).unwrap();
 
         self.client.post(DROPBOX_UPLOAD_URL)
