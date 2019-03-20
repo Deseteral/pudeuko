@@ -4,9 +4,9 @@ use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
 use reqwest::{Client, ClientBuilder};
 use serde_json::json;
 
-const DROPBOX_FILE_PATH: &'static str = "/pudeuko/data.json";
-const DROPBOX_DOWNLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/download";
-const DROPBOX_UPLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/upload";
+const DROPBOX_FILE_PATH: &str = "/pudeuko/data.json";
+const DROPBOX_DOWNLOAD_URL: &str = "https://content.dropboxapi.com/2/files/download";
+const DROPBOX_UPLOAD_URL: &str = "https://content.dropboxapi.com/2/files/upload";
 
 pub struct DropboxStorage {
     client: Client,
