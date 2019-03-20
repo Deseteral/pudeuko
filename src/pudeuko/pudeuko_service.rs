@@ -1,4 +1,4 @@
-use super::domain::{ItemList, Item};
+use super::domain::{Item, ItemList};
 use super::storage::Storage;
 
 pub struct PudeukoService {
@@ -22,7 +22,8 @@ impl PudeukoService {
 
     pub fn get_item_by_id(self: &Self, id: String) -> Option<Item> {
         self.storage
-            .read().iter()
+            .read()
+            .iter()
             .find(|&item| item.id == id)
             .map(|item| item.clone())
     }

@@ -14,11 +14,15 @@ impl Config {
         let port = (match env::var("PORT") {
             Ok(port_str) => port_str.parse(),
             Err(_) => Ok(8000),
-        }).expect("Could not parse PORT");
+        })
+        .expect("Could not parse PORT");
 
-        let dropbox_token = env::var("DROPBOX_TOKEN")
-            .expect("You have to provide a Dropbox API token");
+        let dropbox_token =
+            env::var("DROPBOX_TOKEN").expect("You have to provide a Dropbox API token");
 
-        Self { port, dropbox_token }
+        Self {
+            port,
+            dropbox_token,
+        }
     }
 }

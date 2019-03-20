@@ -1,8 +1,8 @@
-use rocket::{self, get, post, State};
-use rocket_contrib::json::{Json};
-use super::domain::{ContentDTO};
-use crate::pudeuko::domain::{ItemList, Item};
+use super::domain::ContentDTO;
+use crate::pudeuko::domain::{Item, ItemList};
 use crate::pudeuko::pudeuko_service::PudeukoService;
+use rocket::{self, get, post, State};
+use rocket_contrib::json::Json;
 
 #[get("/")]
 pub fn get_items(service: State<PudeukoService>) -> Json<ItemList> {
@@ -19,7 +19,5 @@ pub fn post_item(content: Json<ContentDTO>, service: State<PudeukoService>) -> J
 
 #[get("/<id>")]
 pub fn get_item(id: String, service: State<PudeukoService>) -> Option<Json<Item>> {
-    service
-        .get_item_by_id(id)
-        .map(|item| Json(item))
+    service.get_item_by_id(id).map(|item| Json(item))
 }

@@ -1,6 +1,6 @@
-use serde_derive::{Deserialize, Serialize};
-use chrono::{Utc};
 use crate::pudeuko::domain::{Item, Link};
+use chrono::Utc;
+use serde_derive::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ContentDTO {
@@ -12,7 +12,9 @@ impl From<ContentDTO> for Item {
         Self {
             id: nanoid::generate(8),
             text: content.text.to_owned(),
-            link: Link { url: content.text.to_owned() },
+            link: Link {
+                url: content.text.to_owned(),
+            },
             created_at: Utc::now().to_rfc3339(),
         }
     }
@@ -25,7 +27,9 @@ mod tests {
     #[test]
     fn should_create_item_from_content_text() {
         // given
-        let content = ContentDTO { text: String::from("https://example.com") };
+        let content = ContentDTO {
+            text: String::from("https://example.com"),
+        };
 
         // when
         let item = Item::from(content);

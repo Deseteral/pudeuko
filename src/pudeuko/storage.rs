@@ -1,4 +1,4 @@
-use super::domain::{ItemList};
+use super::domain::ItemList;
 
 pub trait Storage {
     fn read(self: &Self) -> ItemList;

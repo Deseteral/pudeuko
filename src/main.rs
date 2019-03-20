@@ -1,12 +1,12 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
+mod api;
 mod config;
 mod pudeuko;
-mod api;
 
-use rocket::{self, routes};
 use pudeuko::dropbox_storage::DropboxStorage;
 use pudeuko::pudeuko_service::PudeukoService;
+use rocket::{self, routes};
 
 fn main() {
     let config = config::Config::load();
@@ -18,10 +18,13 @@ fn main() {
 
     rocket::custom(config)
         .manage(pudeuko_service)
-        .mount("/items", routes![
-            api::handlers::get_items,
-            api::handlers::post_item,
-            api::handlers::get_item,
-        ])
+        .mount(
+            "/items",
+            routes![
+                api::handlers::get_items,
+                api::handlers::post_item,
+                api::handlers::get_item,
+            ],
+        )
         .launch();
 }

@@ -1,8 +1,8 @@
-use serde_json::json;
-use reqwest::{Client, ClientBuilder};
-use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
-use super::domain::{ItemList};
+use super::domain::ItemList;
 use super::storage::Storage;
+use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
+use reqwest::{Client, ClientBuilder};
+use serde_json::json;
 
 const DROPBOX_FILE_PATH: &'static str = "/pudeuko/data.json";
 const DROPBOX_DOWNLOAD_URL: &'static str = "https://content.dropboxapi.com/2/files/download";
@@ -17,23 +17,35 @@ pub struct DropboxStorage {
 impl DropboxStorage {
     pub fn new(dropbox_token: &String) -> Self {
         let mut default_headers = HeaderMap::new();
-        default_headers.insert(AUTHORIZATION, format!("Bearer {}", dropbox_token).parse().unwrap());
+        default_headers.insert(
+            AUTHORIZATION,
+            format!("Bearer {}", dropbox_token).parse().unwrap(),
+        );
 
         let mut download_headers = HeaderMap::new();
         download_headers.insert(
             "Dropbox-API-Arg",
-            json!({ "path": DROPBOX_FILE_PATH }).to_string().parse().unwrap(),
+            json!({ "path": DROPBOX_FILE_PATH })
+                .to_string()
+                .parse()
+                .unwrap(),
         );
 
         let mut upload_headers = HeaderMap::new();
         upload_headers.insert(CONTENT_TYPE, "application/octet-stream".parse().unwrap());
         upload_headers.insert(
             "Dropbox-API-Arg",
-            json!({ "path": DROPBOX_FILE_PATH, "mode": "overwrite" }).to_string().parse().unwrap(),
+            json!({ "path": DROPBOX_FILE_PATH, "mode": "overwrite" })
+                .to_string()
+                .parse()
+                .unwrap(),
         );
 
         Self {
-            client: ClientBuilder::new().default_headers(default_headers).build().unwrap(),
+            client: ClientBuilder::new()
+                .default_headers(default_headers)
+                .build()
+                .unwrap(),
             download_headers,
             upload_headers,
         }
@@ -42,10 +54,14 @@ impl DropboxStorage {
 
 impl Storage for DropboxStorage {
     fn read(self: &Self) -> ItemList {
-        let body = self.client.get(DROPBOX_DOWNLOAD_URL)
+        let body = self
+            .client
+            .get(DROPBOX_DOWNLOAD_URL)
             .headers(self.download_headers.clone())
-            .send().unwrap()
-            .text().unwrap();
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
 
         let items: ItemList = serde_json::from_str(&body).unwrap();
         items
@@ -54,9 +70,11 @@ impl Storage for DropboxStorage {
     fn write(self: &Self, list: &ItemList) {
         let json = serde_json::to_string(list).unwrap();
 
-        self.client.post(DROPBOX_UPLOAD_URL)
+        self.client
+            .post(DROPBOX_UPLOAD_URL)
             .headers(self.upload_headers.clone())
             .body(json)
-            .send().unwrap();
+            .send()
+            .unwrap();
     }
 }
