@@ -4,7 +4,7 @@ mod config;
 mod pudeuko;
 mod api;
 
-use std::sync::Mutex;
+use std::sync::{RwLock, Arc};
 use rocket::{self, routes};
 use pudeuko::dropbox_storage::DropboxStorage;
 use pudeuko::pudeuko_service::PudeukoService;
@@ -12,13 +12,14 @@ use pudeuko::pudeuko_service::PudeukoService;
 fn main() {
     let config = config::Config::load_from_env();
     let dropbox_storage = DropboxStorage::new(&config.dropbox_token);
-    let pudeuko_service = PudeukoService::new(dropbox_storage);
+    let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
+    let shared_pudeuko_service = Arc::new(RwLock::new(pudeuko_service));
 
     let mut config = rocket::Config::active().expect("Could not load configuration");
     config.set_port(config.port);
 
     rocket::custom(config)
-        .manage(pudeuko_service)
+        .manage(shared_pudeuko_service)
         .mount("/items", routes![
             api::handlers::get_items,
             api::handlers::post_item,

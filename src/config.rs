@@ -7,10 +7,10 @@ pub struct Config {
 
 impl Config {
     pub fn load_from_env() -> Self {
-        let port = match env::var("PORT") {
+        let port = (match env::var("PORT") {
             Ok(port_str) => port_str.parse(),
             Err(_) => Ok(8000),
-        }.expect("Could not parse PORT");
+        }).expect("Could not parse PORT");
 
         let dropbox_token = env::var("DROPBOX_TOKEN")
             .expect("You have to provide a Dropbox API token");

@@ -1,6 +1,10 @@
+use std::sync::{RwLock, Arc};
 use serde_derive::{Deserialize, Serialize};
 use chrono::{Utc};
 use crate::pudeuko::domain::{Item, Link};
+use crate::pudeuko::pudeuko_service::PudeukoService;
+
+pub type SharedPudeukoService = Arc<RwLock<PudeukoService>>;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ContentDTO {

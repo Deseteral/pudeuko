@@ -1,13 +1,12 @@
-use std::sync::Mutex;
 use super::domain::{ItemList, Item};
 use super::storage::Storage;
 
-pub struct PudeukoService<T: Storage + Send> {
-    storage: T,
+pub struct PudeukoService {
+    storage: Box<dyn Storage + Send + Sync>,
 }
 
 impl PudeukoService {
-    pub fn new(storage: Mutex<Box<dyn Storage>>) -> Self {
+    pub fn new(storage: Box<dyn Storage + Send + Sync>) -> Self {
         Self { storage }
     }
 
