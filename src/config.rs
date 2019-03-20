@@ -6,7 +6,11 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn load_from_env() -> Self {
+    pub fn load() -> Self {
+        Config::load_from_env()
+    }
+
+    fn load_from_env() -> Self {
         let port = (match env::var("PORT") {
             Ok(port_str) => port_str.parse(),
             Err(_) => Ok(8000),
