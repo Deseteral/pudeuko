@@ -1,5 +1,5 @@
-use super::domain::ItemList;
-use super::storage::Storage;
+use crate::domain::ItemList;
+use crate::infrastructure::Storage;
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
 use reqwest::{Client, ClientBuilder};
 use serde_json::json;

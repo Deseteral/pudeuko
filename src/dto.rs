@@ -1,4 +1,4 @@
-use crate::pudeuko::domain::{Item, Link};
+use crate::domain::{Item, Link};
 use chrono::Utc;
 use serde_derive::{Deserialize, Serialize};
 

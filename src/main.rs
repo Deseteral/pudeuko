@@ -2,10 +2,13 @@
 
 mod api;
 mod config;
-mod pudeuko;
+mod domain;
+mod dto;
+mod infrastructure;
+mod pudeuko_service;
 
-use pudeuko::dropbox_storage::DropboxStorage;
-use pudeuko::pudeuko_service::PudeukoService;
+use infrastructure::DropboxStorage;
+use pudeuko_service::PudeukoService;
 use rocket::{self, routes};
 
 fn main() {
@@ -21,9 +24,9 @@ fn main() {
         .mount(
             "/items",
             routes![
-                api::handlers::get_items,
-                api::handlers::post_item,
-                api::handlers::get_item,
+                api::items_endpoint::get_items,
+                api::items_endpoint::post_item,
+                api::items_endpoint::get_item,
             ],
         )
         .launch();

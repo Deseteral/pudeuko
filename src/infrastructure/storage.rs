@@ -1,4 +1,4 @@
-use super::domain::ItemList;
+use crate::domain::ItemList;
 
 #[allow(clippy::ptr_arg)]
 pub trait Storage {

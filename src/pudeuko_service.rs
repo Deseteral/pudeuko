@@ -1,5 +1,5 @@
-use super::domain::{Item, ItemList};
-use super::storage::Storage;
+use crate::domain::{Item, ItemList};
+use crate::infrastructure::Storage;
 
 pub struct PudeukoService {
     storage: Box<dyn Storage + Send + Sync>,
