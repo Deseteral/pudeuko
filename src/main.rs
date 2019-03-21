@@ -1,34 +1,33 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
-use std::env;
-use rocket::{self, routes, Config};
-
+mod api;
+mod config;
 mod domain;
-mod items_controller;
+mod dto;
+mod infrastructure;
 mod pudeuko_service;
-mod dropbox_client;
 
-fn create_configuration() -> Config {
-    let mut config = Config::active().expect("Could not load configuration");
-    if let Ok(port_str) = env::var("PORT") {
-        let port = port_str.parse().expect("Could not parse PORT");
-        config.set_port(port);
-    }
-    config
-}
+use infrastructure::DropboxStorage;
+use pudeuko_service::PudeukoService;
+use rocket::{self, routes};
 
 fn main() {
-    let dropbox_token = env::var("DROPBOX_TOKEN").expect("You have to provide a Dropbox API token");
-    let dropbox_client = dropbox_client::DropboxClient::new(dropbox_token);
-    let pudeuko_service = pudeuko_service::PudeukoService::new(dropbox_client);
+    let app_config = config::Config::load();
+    let dropbox_storage = DropboxStorage::new(&app_config.dropbox_token);
+    let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
 
-    let config = create_configuration();
+    let mut config = rocket::Config::active().expect("Could not load configuration");
+    config.set_port(app_config.port);
+
     rocket::custom(config)
         .manage(pudeuko_service)
-        .mount("/items", routes![
-            items_controller::get_items,
-            items_controller::post_item,
-            items_controller::get_item,
-        ])
+        .mount(
+            "/items",
+            routes![
+                api::items_endpoint::get_items,
+                api::items_endpoint::post_item,
+                api::items_endpoint::get_item,
+            ],
+        )
         .launch();
 }
