@@ -12,7 +12,7 @@ impl Config {
 
     fn load_from_env() -> Self {
         let port = env::var("PORT")
-            .unwrap_or("8000".to_string())
+            .unwrap_or_else(|_| "8000".to_string())
             .parse()
             .expect("Could not parse PORT");
 
