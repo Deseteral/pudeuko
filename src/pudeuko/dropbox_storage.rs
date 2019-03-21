@@ -15,7 +15,7 @@ pub struct DropboxStorage {
 }
 
 impl DropboxStorage {
-    pub fn new(dropbox_token: &String) -> Self {
+    pub fn new(dropbox_token: &str) -> Self {
         let mut default_headers = HeaderMap::new();
         default_headers.insert(
             AUTHORIZATION,

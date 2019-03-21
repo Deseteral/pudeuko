@@ -19,5 +19,5 @@ pub fn post_item(content: Json<ContentDTO>, service: State<PudeukoService>) -> J
 
 #[get("/<id>")]
 pub fn get_item(id: String, service: State<PudeukoService>) -> Option<Json<Item>> {
-    service.get_item_by_id(id).map(|item| Json(item))
+    service.get_item_by_id(id).map(Json)
 }

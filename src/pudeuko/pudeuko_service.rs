@@ -25,6 +25,6 @@ impl PudeukoService {
             .read()
             .iter()
             .find(|&item| item.id == id)
-            .map(|item| item.clone())
+            .cloned()
     }
 }
