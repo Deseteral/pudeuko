@@ -9,12 +9,12 @@ use pudeuko::pudeuko_service::PudeukoService;
 use rocket::{self, routes};
 
 fn main() {
-    let config = config::Config::load();
-    let dropbox_storage = DropboxStorage::new(&config.dropbox_token);
+    let app_config = config::Config::load();
+    let dropbox_storage = DropboxStorage::new(&app_config.dropbox_token);
     let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
 
     let mut config = rocket::Config::active().expect("Could not load configuration");
-    config.set_port(config.port);
+    config.set_port(app_config.port);
 
     rocket::custom(config)
         .manage(pudeuko_service)
