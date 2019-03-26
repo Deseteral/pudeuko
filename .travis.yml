@@ -3,7 +3,7 @@ rust:
     - nightly
 before_script:
     - rustup component add rustfmt --toolchain nightly
-    - rustup component add clippy --toolchain=nightly
+    - rustup component add clippy --toolchain=nightly || cargo install --git https://github.com/rust-lang/rust-clippy/ --force clippy
 script:
     - cargo +nightly fmt --all -- --check
     - cargo clippy -- -D warnings
