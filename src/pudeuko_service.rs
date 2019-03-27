@@ -10,17 +10,17 @@ impl PudeukoService {
         Self { storage }
     }
 
-    pub fn get_all(self: &Self) -> ItemList {
+    pub fn get_all(&self) -> ItemList {
         self.storage.read()
     }
 
-    pub fn add_item(self: &Self, item: Item) {
+    pub fn add_item(&mut self, item: Item) {
         let mut list = self.storage.read();
         list.insert(0, item);
-        self.storage.write(&list);
+        self.storage.write(list);
     }
 
-    pub fn get_item_by_id(self: &Self, id: String) -> Option<Item> {
+    pub fn get_item_by_id(&self, id: String) -> Option<Item> {
         self.storage
             .read()
             .iter()
