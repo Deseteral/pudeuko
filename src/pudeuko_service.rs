@@ -2,11 +2,11 @@ use crate::domain::{Item, ItemList};
 use crate::infrastructure::Storage;
 
 pub struct PudeukoService {
-    storage: Box<dyn Storage + Send + Sync>,
+    storage: Box<dyn Storage>,
 }
 
 impl PudeukoService {
-    pub fn new(storage: Box<dyn Storage + Send + Sync>) -> Self {
+    pub fn new(storage: Box<dyn Storage>) -> Self {
         Self { storage }
     }
 
