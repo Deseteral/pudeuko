@@ -1,10 +1,10 @@
 language: rust
 rust:
-    - nightly
+    - stable
 before_script:
-    - rustup component add rustfmt --toolchain nightly
+    - rustup component add rustfmt
 script:
-    - cargo +nightly fmt --all -- --check
+    - cargo fmt --all -- --check
     - cargo build
     - cargo test
 cache: cargo
