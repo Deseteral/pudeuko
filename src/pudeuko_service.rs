@@ -23,7 +23,7 @@ impl PudeukoService {
         self.storage.write(&list);
     }
 
-    pub fn get_item_by_id(self: &Self, id: String) -> Option<Item> {
+    pub fn get_item_by_id(self: &Self, id: &str) -> Option<Item> {
         self.storage
             .read()
             .iter()

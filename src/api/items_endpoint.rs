@@ -24,9 +24,9 @@ pub fn get_item(
     shared_service: web::Data<SharedPudeukoService>,
 ) -> HttpResponse {
     let service = shared_service.lock().unwrap();
-    let id = path.0.clone();
+    let id = &path.0;
 
-    match service.get_item_by_id(id.clone()) {
+    match service.get_item_by_id(&id) {
         Some(item) => HttpResponse::Ok().json(item),
         None => HttpResponse::NotFound().body(format!("Item with id '{}' was not found", &id)),
     }
