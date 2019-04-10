@@ -1,9 +1,12 @@
 use crate::domain::{Item, ItemList};
 use crate::infrastructure::Storage;
+use std::sync::{Arc, Mutex};
 
 pub struct PudeukoService {
     storage: Box<dyn Storage>,
 }
+
+pub type SharedPudeukoService = Arc<Mutex<PudeukoService>>;
 
 impl PudeukoService {
     pub fn new(storage: Box<dyn Storage>) -> Self {
