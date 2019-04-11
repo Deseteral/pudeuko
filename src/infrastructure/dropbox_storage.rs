@@ -53,7 +53,7 @@ impl DropboxStorage {
 }
 
 impl Storage for DropboxStorage {
-    fn read(self: &Self) -> ItemList {
+    fn read(&self) -> ItemList {
         let body = self
             .client
             .get(DROPBOX_DOWNLOAD_URL)
@@ -67,7 +67,7 @@ impl Storage for DropboxStorage {
         items
     }
 
-    fn write(self: &Self, list: &ItemList) {
+    fn write(&self, list: &ItemList) {
         let json = serde_json::to_string(list).unwrap();
 
         self.client
