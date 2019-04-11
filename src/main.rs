@@ -12,9 +12,9 @@ use pudeuko_service::{PudeukoService, SharedPudeukoService};
 
 fn main() -> std::io::Result<()> {
     let config = Config::load();
-    let dropbox_storage = DropboxStorage::new(&config.dropbox_token);
-    let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
-    let shared_service = PudeukoService::make_shared(pudeuko_service);
+    let storage = DropboxStorage::new(&config.dropbox_token);
+    let service = PudeukoService::new(Box::new(storage));
+    let shared_service = PudeukoService::make_shared(service);
 
     HttpServer::new(move || {
         App::new()
