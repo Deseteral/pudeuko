@@ -13,6 +13,10 @@ impl PudeukoService {
         Self { storage }
     }
 
+    pub fn make_shared(pudeuko_service: PudeukoService) -> SharedPudeukoService {
+        Arc::new(Mutex::new(pudeuko_service))
+    }
+
     pub fn get_all(&self) -> ItemList {
         self.storage.read()
     }
