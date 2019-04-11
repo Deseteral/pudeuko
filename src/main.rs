@@ -6,14 +6,17 @@ mod infrastructure;
 mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
-use config::Config;
-use infrastructure::DropboxStorage;
+use config::{Config, StorageType};
+use infrastructure::{DropboxStorage, InMemoryStorage, Storage};
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
 
 fn main() -> std::io::Result<()> {
     let config = Config::load();
-    let storage = DropboxStorage::new(&config.dropbox_token);
-    let service = PudeukoService::new(Box::new(storage));
+    let storage: Box<dyn Storage> = match config.storage_type {
+        StorageType::Dropbox => Box::new(DropboxStorage::new(&config.dropbox_token)),
+        StorageType::InMemory => Box::new(InMemoryStorage::new()),
+    };
+    let service = PudeukoService::new(storage);
     let shared_service = PudeukoService::make_shared(service);
 
     HttpServer::new(move || {
