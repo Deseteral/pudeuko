@@ -1,12 +1,15 @@
 use crate::domain::{Item, ItemList};
 use crate::infrastructure::Storage;
+use std::sync::{Arc, RwLock};
 
 pub struct PudeukoService {
-    mut storage: Box<dyn Storage + Send + Sync>,
+    storage: Box<dyn Storage>,
 }
 
+pub type SharedPudeukoService = Arc<RwLock<PudeukoService>>;
+
 impl PudeukoService {
-    pub fn new(storage: Box<dyn Storage + Send + Sync>) -> Self {
+    pub fn new(storage: Box<dyn Storage>) -> Self {
         Self { storage }
     }
 
@@ -20,7 +23,7 @@ impl PudeukoService {
         self.storage.write(list);
     }
 
-    pub fn get_item_by_id(&self, id: String) -> Option<Item> {
+    pub fn get_item_by_id(&self, id: &str) -> Option<Item> {
         self.storage
             .read()
             .iter()
