@@ -8,13 +8,13 @@ mod pudeuko_service;
 use actix_web::{web, App, HttpServer};
 use infrastructure::DropboxStorage;
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
-use std::sync::{Arc, RwLock};
+use std::sync::{Arc, Mutex};
 
 fn main() -> std::io::Result<()> {
     let app_config = config::Config::load();
     let dropbox_storage = DropboxStorage::new(&app_config.dropbox_token);
     let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
-    let shared_service: SharedPudeukoService = Arc::new(RwLock::new(pudeuko_service));
+    let shared_service: SharedPudeukoService = Arc::new(Mutex::new(pudeuko_service));
 
     HttpServer::new(move || {
         App::new()
