@@ -3,7 +3,7 @@
 
 REST service for storing internet things (or... links 🤔) you wish to check out later.
 
-*Written in Rust using Rocket framework.*
+*Written in Rust using actix-web.*
 
 ## Development
 To compile you have to install Rust nightly.
