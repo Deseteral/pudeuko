@@ -41,9 +41,9 @@ fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .data(shared_service.clone())
-            .route("/items", web::get().to(api::items_endpoint::get_items))
-            .route("/items", web::post().to(api::items_endpoint::post_item))
-            .route("/items/{id}", web::get().to(api::items_endpoint::get_item))
+            .route("/items", web::get().to(api::items_controller::get_items))
+            .route("/items", web::post().to(api::items_controller::post_item))
+            .route("/items/{id}", web::get().to(api::items_controller::get_item))
     })
     .bind(format!("0.0.0.0:{}", &app_config.port))?
     .run()
