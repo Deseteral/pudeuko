@@ -43,7 +43,10 @@ fn main() -> std::io::Result<()> {
             .data(shared_service.clone())
             .route("/items", web::get().to(api::items_controller::get_items))
             .route("/items", web::post().to(api::items_controller::post_item))
-            .route("/items/{id}", web::get().to(api::items_controller::get_item))
+            .route(
+                "/items/{id}",
+                web::get().to(api::items_controller::get_item),
+            )
     })
     .bind(format!("0.0.0.0:{}", &app_config.port))?
     .run()
