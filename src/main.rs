@@ -6,11 +6,11 @@ mod infrastructure;
 mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
+use fern;
 use infrastructure::DropboxStorage;
+use log;
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
 use std::sync::{Arc, RwLock};
-use fern;
-use log;
 
 fn setup_logging() -> std::result::Result<(), fern::InitError> {
     fern::Dispatch::new()
@@ -20,7 +20,7 @@ fn setup_logging() -> std::result::Result<(), fern::InitError> {
                 chrono::Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
                 record.target(),
                 record.level(),
-                message
+                message,
             ))
         })
         .level(log::LevelFilter::Info)
