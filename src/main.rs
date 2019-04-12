@@ -26,6 +26,6 @@ fn main() -> std::io::Result<()> {
             .route("/items", web::post().to(api::items_endpoint::post_item))
             .route("/items/{id}", web::get().to(api::items_endpoint::get_item))
     })
-    .bind(format!("127.0.0.1:{}", &config.port))?
+    .bind(format!("0.0.0.0:{}", &config.port))?
     .run()
 }
