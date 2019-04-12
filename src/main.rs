@@ -7,8 +7,28 @@ mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
 use config::{Config, StorageType};
+use fern;
 use infrastructure::{DropboxStorage, InMemoryStorage, Storage};
+use log;
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
+
+fn setup_logging() -> std::result::Result<(), fern::InitError> {
+    fern::Dispatch::new()
+        .format(|out, message, record| {
+            out.finish(format_args!(
+                "{}[{}][{}] {}",
+                chrono::Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
+                record.target(),
+                record.level(),
+                message,
+            ))
+        })
+        .level(log::LevelFilter::Info)
+        .chain(std::io::stdout())
+        .apply()?;
+
+    Ok(())
+}
 
 fn main() -> std::io::Result<()> {
     let config = Config::load();
@@ -19,12 +39,17 @@ fn main() -> std::io::Result<()> {
     let service = PudeukoService::new(storage);
     let shared_service = PudeukoService::make_shared(service);
 
+    setup_logging().expect("Failed to initializer logger");
+
     HttpServer::new(move || {
         App::new()
             .data(shared_service.clone())
-            .route("/items", web::get().to(api::items_endpoint::get_items))
-            .route("/items", web::post().to(api::items_endpoint::post_item))
-            .route("/items/{id}", web::get().to(api::items_endpoint::get_item))
+            .route("/items", web::get().to(api::items_controller::get_items))
+            .route("/items", web::post().to(api::items_controller::post_item))
+            .route(
+                "/items/{id}",
+                web::get().to(api::items_controller::get_item),
+            )
     })
     .bind(format!("0.0.0.0:{}", &config.port))?
     .run()
