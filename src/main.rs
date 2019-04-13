@@ -13,7 +13,7 @@ use log::{info};
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
 
 fn main() -> std::io::Result<()> {
-    logger::setup_logging().expect("Failed to initializer logger");
+    logger::setup_logging().expect("Failed to initialize logger");
 
     let config = Config::load();
     let storage: Box<dyn Storage> = match config.storage_type {
