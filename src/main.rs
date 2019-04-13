@@ -1,5 +1,6 @@
 mod api;
 mod config;
+mod logger;
 mod domain;
 mod dto;
 mod infrastructure;
@@ -7,32 +8,12 @@ mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
 use config::{Config, StorageType};
-use fern;
 use infrastructure::{DropboxStorage, InMemoryStorage, Storage};
-use log;
 use log::{info};
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
 
-fn setup_logging() -> std::result::Result<(), fern::InitError> {
-    fern::Dispatch::new()
-        .format(|out, message, record| {
-            out.finish(format_args!(
-                "{}[{}][{}] {}",
-                chrono::Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
-                record.target(),
-                record.level(),
-                message,
-            ))
-        })
-        .level(log::LevelFilter::Info)
-        .chain(std::io::stdout())
-        .apply()?;
-
-    Ok(())
-}
-
 fn main() -> std::io::Result<()> {
-    setup_logging().expect("Failed to initializer logger");
+    logger::setup_logging().expect("Failed to initializer logger");
 
     let config = Config::load();
     let storage: Box<dyn Storage> = match config.storage_type {
