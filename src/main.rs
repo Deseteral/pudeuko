@@ -1,15 +1,15 @@
 mod api;
 mod config;
-mod logger;
 mod domain;
 mod dto;
 mod infrastructure;
+mod logger;
 mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
 use config::{Config, StorageType};
 use infrastructure::{DropboxStorage, InMemoryStorage, Storage};
-use log::{info};
+use log::info;
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
 
 fn main() -> std::io::Result<()> {
