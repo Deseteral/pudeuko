@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, fmt};
 
 pub enum StorageType {
     InMemory,
@@ -37,6 +37,15 @@ impl Config {
             port,
             dropbox_token,
             storage_type,
+        }
+    }
+}
+
+impl fmt::Display for StorageType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            StorageType::Dropbox => write!(f, "Dropbox"),
+            StorageType::InMemory => write!(f, "In memory"),
         }
     }
 }
