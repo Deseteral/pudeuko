@@ -1,7 +1,7 @@
 use fern;
 use log;
 
-pub fn setup_logging() -> std::result::Result<(), fern::InitError> {
+pub fn setup() -> std::result::Result<(), fern::InitError> {
     fern::Dispatch::new()
         .format(|out, message, record| {
             out.finish(format_args!(
