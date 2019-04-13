@@ -23,7 +23,7 @@ fn main() -> std::io::Result<()> {
     let service = PudeukoService::new(storage);
     let shared_service = PudeukoService::make_shared(service);
 
-    info!("Storage type: {}", config.storage_type);
+    info!("Storage type: {}", &config.storage_type);
 
     HttpServer::new(move || {
         App::new()
