@@ -22,11 +22,13 @@ fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .data(shared_service.clone())
-            .route("/items", web::get().to(api::items_controller::get_items))
-            .route("/items", web::post().to(api::items_controller::post_item))
-            .route(
-                "/items/{id}",
-                web::get().to(api::items_controller::get_item),
+            .service(web::resource("/items")
+                .route(web::get().to(api::items_controller::get_items))
+                .route(web::post().to(api::items_controller::post_item))
+            )
+            .service(web::resource("/items/{id}")
+                .route(web::delete().to(api::items_controller::delete_item))
+                .route(web::get().to(api::items_controller::get_item))
             )
     })
     .bind(format!("0.0.0.0:{}", &app_config.port))?

@@ -31,3 +31,18 @@ pub fn get_item(
         None => HttpResponse::NotFound().body(format!("Item with id '{}' was not found", &id)),
     }
 }
+
+pub fn delete_item(
+    path: web::Path<(String,)>,
+    shared_service: web::Data<SharedPudeukoService>,
+) -> HttpResponse {
+    let service = shared_service.read().unwrap();
+    let id = &path.0;
+
+    if service.get_item_by_id(&id).is_some() {
+        service.remove_item_by_id(&id);
+        HttpResponse::NoContent().body(format!("Item with id '{}' was removed", &id))
+    } else {
+        HttpResponse::NotFound().body(format!("Item with id '{}' was not found", &id))
+    }
+}
