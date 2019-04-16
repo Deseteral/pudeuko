@@ -16,14 +16,15 @@ fn main() -> std::io::Result<()> {
     logger::setup().expect("Failed to initialize logger");
 
     let config = Config::load();
+    info!("Storage type: {}", &config.storage_type);
+
     let storage: Box<dyn Storage> = match config.storage_type {
-        StorageType::Dropbox => Box::new(DropboxStorage::new(&config.dropbox_token)),
+        StorageType::Dropbox(token) => Box::new(DropboxStorage::new(&token)),
         StorageType::InMemory => Box::new(InMemoryStorage::new()),
     };
     let service = PudeukoService::new(storage);
     let shared_service = PudeukoService::make_shared(service);
 
-    info!("Storage type: {}", &config.storage_type);
 
     HttpServer::new(move || {
         App::new()

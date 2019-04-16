@@ -2,12 +2,11 @@ use std::{env, fmt};
 
 pub enum StorageType {
     InMemory,
-    Dropbox,
+    Dropbox(String),
 }
 
 pub struct Config {
     pub port: u16,
-    pub dropbox_token: String,
     pub storage_type: StorageType,
 }
 
@@ -30,12 +29,11 @@ impl Config {
         let storage_type = if dropbox_token.is_empty() {
             StorageType::InMemory
         } else {
-            StorageType::Dropbox
+            StorageType::Dropbox(dropbox_token)
         };
 
         Self {
             port,
-            dropbox_token,
             storage_type,
         }
     }
@@ -44,7 +42,7 @@ impl Config {
 impl fmt::Display for StorageType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            StorageType::Dropbox => write!(f, "Dropbox"),
+            StorageType::Dropbox(_token) => write!(f, "Dropbox"),
             StorageType::InMemory => write!(f, "In memory"),
         }
     }

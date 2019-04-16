@@ -19,7 +19,7 @@ impl DropboxStorage {
         let mut default_headers = HeaderMap::new();
         default_headers.insert(
             AUTHORIZATION,
-            format!("Bearer {}", dropbox_token).parse().unwrap(),
+            format!("Bearer {}", &dropbox_token).parse().unwrap(),
         );
 
         let mut download_headers = HeaderMap::new();
