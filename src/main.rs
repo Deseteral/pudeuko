@@ -7,17 +7,23 @@ mod logger;
 mod pudeuko_service;
 
 use actix_web::{web, App, HttpServer};
-use infrastructure::DropboxStorage;
+use config::{Config, StorageType};
+use infrastructure::{DropboxStorage, InMemoryStorage, Storage};
+use log::info;
 use pudeuko_service::{PudeukoService, SharedPudeukoService};
-use std::sync::{Arc, RwLock};
 
 fn main() -> std::io::Result<()> {
-    let app_config = config::Config::load();
-    let dropbox_storage = DropboxStorage::new(&app_config.dropbox_token);
-    let pudeuko_service = PudeukoService::new(Box::new(dropbox_storage));
-    let shared_service: SharedPudeukoService = Arc::new(RwLock::new(pudeuko_service));
-
     logger::setup().expect("Failed to initialize logger");
+
+    let config = Config::load();
+    info!("Storage type: {}", &config.storage_type);
+
+    let storage: Box<dyn Storage> = match config.storage_type {
+        StorageType::Dropbox(token) => Box::new(DropboxStorage::new(&token)),
+        StorageType::InMemory => Box::new(InMemoryStorage::new()),
+    };
+    let service = PudeukoService::new(storage);
+    let shared_service = PudeukoService::make_shared(service);
 
     HttpServer::new(move || {
         App::new()
@@ -31,6 +37,6 @@ fn main() -> std::io::Result<()> {
                 .route(web::get().to(api::items_controller::get_item))
             )
     })
-    .bind(format!("0.0.0.0:{}", &app_config.port))?
+    .bind(format!("0.0.0.0:{}", &config.port))?
     .run()
 }
