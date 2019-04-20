@@ -37,10 +37,7 @@ impl PudeukoService {
 
     pub fn remove_item_by_id(&self, id: &str) {
         let mut list = self.storage.read();
-        let index = list
-            .iter()
-            .position(|item| item.id == id)
-            .unwrap();
+        let index = list.iter().position(|item| item.id == id).unwrap();
         list.remove(index);
 
         self.storage.write(&list);
