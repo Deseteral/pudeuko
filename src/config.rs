@@ -32,10 +32,7 @@ impl Config {
             StorageType::Dropbox(dropbox_token)
         };
 
-        Self {
-            port,
-            storage_type,
-        }
+        Self { port, storage_type }
     }
 }
 

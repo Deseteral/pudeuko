@@ -25,7 +25,6 @@ fn main() -> std::io::Result<()> {
     let service = PudeukoService::new(storage);
     let shared_service = PudeukoService::make_shared(service);
 
-
     HttpServer::new(move || {
         App::new()
             .data(shared_service.clone())
