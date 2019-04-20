@@ -19,7 +19,7 @@ impl DropboxStorage {
         let mut default_headers = HeaderMap::new();
         default_headers.insert(
             AUTHORIZATION,
-            format!("Bearer {}", dropbox_token).parse().unwrap(),
+            format!("Bearer {}", &dropbox_token).parse().unwrap(),
         );
 
         let mut download_headers = HeaderMap::new();
@@ -67,8 +67,8 @@ impl Storage for DropboxStorage {
         items
     }
 
-    fn write(&self, list: &ItemList) {
-        let json = serde_json::to_string(list).unwrap();
+    fn write(&mut self, list: ItemList) {
+        let json = serde_json::to_string(&list).unwrap();
 
         self.client
             .post(DROPBOX_UPLOAD_URL)
