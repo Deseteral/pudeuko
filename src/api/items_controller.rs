@@ -38,7 +38,7 @@ pub fn delete_item(
     path: web::Path<(String,)>,
     shared_service: web::Data<SharedPudeukoService>,
 ) -> HttpResponse {
-    let service = shared_service.read().unwrap();
+    let mut service = shared_service.lock().unwrap();
     let id = &path.0;
 
     if service.get_item_by_id(&id).is_some() {

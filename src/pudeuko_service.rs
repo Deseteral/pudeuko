@@ -35,11 +35,11 @@ impl PudeukoService {
             .cloned()
     }
 
-    pub fn remove_item_by_id(&self, id: &str) {
+    pub fn remove_item_by_id(&mut self, id: &str) {
         let mut list = self.storage.read();
         let index = list.iter().position(|item| item.id == id).unwrap();
         list.remove(index);
 
-        self.storage.write(&list);
+        self.storage.write(list);
     }
 }
