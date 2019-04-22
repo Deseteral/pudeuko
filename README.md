@@ -16,7 +16,7 @@ cargo test
 
 ## Endpoints
 `GET /items` \
-Returns array of items
+Returns array of items.
 
 `POST /items` \
 Accepts `application/json` \
@@ -25,7 +25,10 @@ Parses string content containing link to save. That link is being transformed in
 to data storage.
 
 `GET /items/<id>` \
-Returns an item for given `id`
+Returns an item for given `id`.
+
+`DELETE /items/<id>` \
+Removes an item from pudeuko if it is found by given `id`.
 
 ## Data storage
 `pudeuko` uses Dropbox as it's data storage. To run the app you have to provide Dropbox app token
