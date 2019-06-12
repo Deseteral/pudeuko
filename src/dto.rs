@@ -1,7 +1,7 @@
 use crate::domain::{Item, Link};
 use chrono::Utc;
-use serde_derive::{Deserialize, Serialize};
 use message_meta::parse;
+use serde_derive::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ContentDTO {
@@ -12,7 +12,9 @@ impl From<ContentDTO> for Item {
     fn from(content: ContentDTO) -> Self {
         let meta = parse(content.text.to_owned());
         let link = if meta.links.len() > 0 {
-            Some(Link { url: meta.links[0].url.to_owned() })
+            Some(Link {
+                url: meta.links[0].url.to_owned(),
+            })
         } else {
             None
         };
@@ -43,7 +45,7 @@ mod tests {
         // then
         assert_eq!(item.id.len(), 8);
         assert_eq!(item.text, "https://example.com");
-        assert_eq!(item.link.unwrap().url , "https://example.com");
+        assert_eq!(item.link.unwrap().url, "https://example.com");
     }
 
     #[test]
@@ -58,7 +60,10 @@ mod tests {
 
         // then
         assert_eq!(item.id.len(), 8);
-        assert_eq!(item.text, "Check out this link: https://example.com it is awesome!");
+        assert_eq!(
+            item.text,
+            "Check out this link: https://example.com it is awesome!"
+        );
         assert_eq!(item.link.unwrap().url, "https://example.com");
     }
 
