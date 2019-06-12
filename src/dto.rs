@@ -11,7 +11,7 @@ pub struct ContentDTO {
 impl From<ContentDTO> for Item {
     fn from(content: ContentDTO) -> Self {
         let meta = parse(content.text.to_owned());
-        let link = if meta.links.len() > 0 {
+        let link = if !meta.links.is_empty() {
             Some(Link {
                 url: meta.links[0].url.to_owned(),
             })
