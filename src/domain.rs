@@ -7,7 +7,7 @@ pub type ItemList = Vec<Item>;
 pub struct Item {
     pub id: String,
     pub created_at: String,
-    pub link: Link,
+    pub link: Option<Link>,
     pub text: String,
 }
 
