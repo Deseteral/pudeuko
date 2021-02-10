@@ -1,7 +1,6 @@
-use crate::domain::ItemList;
+use crate::domain::Item;
 
-#[allow(clippy::ptr_arg)]
 pub trait Storage: Send + Sync {
-    fn read(&self) -> ItemList;
-    fn write(&mut self, list: ItemList);
+    fn read(&self) -> Vec<Item>;
+    fn write(&mut self, list: Vec<Item>);
 }

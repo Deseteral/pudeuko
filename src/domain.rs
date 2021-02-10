@@ -1,7 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
 
-pub type ItemList = Vec<Item>;
-
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct Item {

@@ -1,5 +1,4 @@
-use crate::domain::ItemList;
-use crate::infrastructure::Storage;
+use crate::{domain::Item, infrastructure::Storage};
 use reqwest::header::{HeaderMap, AUTHORIZATION, CONTENT_TYPE};
 use reqwest::{Client, ClientBuilder};
 use serde_json::json;
@@ -53,7 +52,7 @@ impl DropboxStorage {
 }
 
 impl Storage for DropboxStorage {
-    fn read(&self) -> ItemList {
+    fn read(&self) -> Vec<Item> {
         let body = self
             .client
             .get(DROPBOX_DOWNLOAD_URL)
@@ -63,11 +62,11 @@ impl Storage for DropboxStorage {
             .text()
             .unwrap();
 
-        let items: ItemList = serde_json::from_str(&body).unwrap();
+        let items: Vec<Item> = serde_json::from_str(&body).unwrap();
         items
     }
 
-    fn write(&mut self, list: ItemList) {
+    fn write(&mut self, list: Vec<Item>) {
         let json = serde_json::to_string(&list).unwrap();
 
         self.client

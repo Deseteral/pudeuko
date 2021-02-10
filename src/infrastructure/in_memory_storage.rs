@@ -1,8 +1,7 @@
-use crate::domain::ItemList;
-use crate::infrastructure::Storage;
+use crate::{domain::Item, infrastructure::Storage};
 
 pub struct InMemoryStorage {
-    items: ItemList,
+    items: Vec<Item>,
 }
 
 impl InMemoryStorage {
@@ -12,11 +11,11 @@ impl InMemoryStorage {
 }
 
 impl Storage for InMemoryStorage {
-    fn read(&self) -> ItemList {
+    fn read(&self) -> Vec<Item> {
         self.items.to_vec()
     }
 
-    fn write(&mut self, list: ItemList) {
+    fn write(&mut self, list: Vec<Item>) {
         self.items = list;
     }
 }

@@ -1,4 +1,4 @@
-use crate::domain::{Item, ItemList};
+use crate::domain::Item;
 use crate::infrastructure::Storage;
 use std::sync::{Arc, Mutex};
 
@@ -17,7 +17,7 @@ impl PudeukoService {
         Arc::new(Mutex::new(pudeuko_service))
     }
 
-    pub fn get_all(&self) -> ItemList {
+    pub fn get_all(&self) -> Vec<Item> {
         self.storage.read()
     }
 
