@@ -40,11 +40,13 @@ impl DropboxStorage {
                 .unwrap(),
         );
 
+        let client = ClientBuilder::new()
+            .default_headers(default_headers)
+            .build()
+            .unwrap();
+
         Self {
-            client: ClientBuilder::new()
-                .default_headers(default_headers)
-                .build()
-                .unwrap(),
+            client,
             download_headers,
             upload_headers,
         }
