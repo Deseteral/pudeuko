@@ -1,15 +1,14 @@
-use crate::domain::Item;
-use crate::infrastructure::Storage;
+use crate::{domain::Item, dropbox_storage::DropboxStorage};
 use std::sync::{Arc, Mutex};
 
 pub struct PudeukoService {
-    storage: Box<dyn Storage>,
+    storage: DropboxStorage,
 }
 
 pub type SharedPudeukoService = Arc<Mutex<PudeukoService>>;
 
 impl PudeukoService {
-    pub fn new(storage: Box<dyn Storage>) -> Self {
+    pub fn new(storage: DropboxStorage) -> Self {
         Self { storage }
     }
 
