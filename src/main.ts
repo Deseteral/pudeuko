@@ -1,19 +1,15 @@
 import Koa from 'koa';
-import Router from '@koa/router';
 import { loadConfigFromEnv } from './config';
+import ItemsController from './items-controller';
 
 const app = new Koa();
 const config = loadConfigFromEnv();
 
-const router = new Router();
-
-router.get('/', (ctx) => {
-  ctx.body = 'Hello route World';
-});
+const itemsController = new ItemsController();
 
 app
-  .use(router.routes())
-  .use(router.allowedMethods())
+  .use(itemsController.getRouter().routes())
+  .use(itemsController.getRouter().allowedMethods())
   .listen(config.port, () => {
     console.log(`pudeuko started on port ${config.port}`);
   });

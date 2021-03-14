@@ -14,19 +14,24 @@
     "build": "tsc",
     "test": "exit 0"
   },
+  "dependencies": {
+    "@koa/router": "10.0.0",
+    "koa": "2.13.1",
+    "node-fetch": "2.6.1"
+  },
   "devDependencies": {
     "@deseteral/eslint-config": "3.0.2",
     "@types/koa": "2.13.1",
     "@types/koa__router": "8.0.4",
     "@types/node": "14.14.34",
+    "@types/node-fetch": "2.5.8",
     "eslint": "7.22.0",
     "typescript": "4.2.3"
   },
   "eslintConfig": {
-    "extends": "@deseteral/eslint-config/typescript"
-  },
-  "dependencies": {
-    "@koa/router": "10.0.0",
-    "koa": "2.13.1"
+    "extends": "@deseteral/eslint-config/typescript",
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "error"
+    }
   }
 }
