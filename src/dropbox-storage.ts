@@ -1,13 +1,13 @@
 import fetch from 'node-fetch';
 import { loadConfigFromEnv } from './config';
-import { PudeukoItem } from './model';
+import { PudeukoObject } from './model';
 
 const DROPBOX_FILE_PATH = '/pudeuko/data.json';
 const DROPBOX_DOWNLOAD_URL = 'https://content.dropboxapi.com/2/files/download';
 const DROPBOX_UPLOAD_URL = 'https://content.dropboxapi.com/2/files/upload';
 
 class DropboxStorage {
-  static async read(): Promise<PudeukoItem[]> {
+  static async read(): Promise<PudeukoObject> {
     const token = loadConfigFromEnv().dropboxToken;
 
     const data = await fetch(DROPBOX_DOWNLOAD_URL, {
@@ -21,12 +21,12 @@ class DropboxStorage {
     return json;
   }
 
-  static async write(list: PudeukoItem[]): Promise<void> {
+  static async write(pudeuko: PudeukoObject): Promise<void> {
     const token = loadConfigFromEnv().dropboxToken;
 
     await fetch(DROPBOX_UPLOAD_URL, {
       method: 'POST',
-      body: JSON.stringify(list),
+      body: JSON.stringify(pudeuko),
       headers: {
         Authorization: `Bearer ${token}`,
         'Dropbox-API-Arg': JSON.stringify({ path: DROPBOX_FILE_PATH, mode: 'overwrite' }),

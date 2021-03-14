@@ -2,17 +2,17 @@ import Router from '@koa/router';
 import { Context } from 'koa';
 import { PudeukoService } from './pudeuko-service';
 
-class ItemsController {
+class PudeukoController {
   private router: Router;
 
   constructor() {
     this.router = new Router();
-    this.router.prefix('/items');
-    this.router.get('/', ItemsController.getItems);
+    this.router.prefix('/pudeuko');
+    this.router.get('/', PudeukoController.getPudeuko);
   }
 
-  static async getItems(ctx: Context): Promise<void> {
-    ctx.body = await PudeukoService.getItems();
+  private static async getPudeuko(ctx: Context): Promise<void> {
+    ctx.body = await PudeukoService.getPudeuko();
   }
 
   getRouter(): Router {
@@ -20,7 +20,7 @@ class ItemsController {
   }
 }
 
-export default ItemsController;
+export default PudeukoController;
 
 // pub fn get_items(shared_service: web::Data<SharedPudeukoService>) -> HttpResponse {
 //     let service = shared_service.lock().unwrap();

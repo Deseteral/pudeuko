@@ -1,8 +1,8 @@
 import DropboxStorage from './dropbox-storage';
-import { PudeukoItem } from './model';
+import { PudeukoObject } from './model';
 
 class PudeukoService {
-  static async getItems(): Promise<PudeukoItem[]> {
+  static async getPudeuko(): Promise<PudeukoObject> {
     return DropboxStorage.read();
   }
 }
