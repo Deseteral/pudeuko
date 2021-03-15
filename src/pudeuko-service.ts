@@ -1,6 +1,7 @@
+import getUrls from 'get-urls';
 import { nanoid } from 'nanoid';
 import DropboxStorage from './dropbox-storage';
-import { PudeukoItem, PudeukoObject } from './model';
+import { PudeukoItem, PudeukoLink, PudeukoObject } from './model';
 
 class PudeukoItemNotFoundError extends Error {
   constructor(itemId: string) {
@@ -24,7 +25,7 @@ class PudeukoService {
   }
 
   static async addItemFromText(text: string): Promise<void> {
-    const item = this.mapTextToItem(text);
+    const item = this.simpleItemFromText(text);
 
     const pudeuko = await DropboxStorage.read();
     pudeuko.items.unshift(item);
@@ -41,11 +42,15 @@ class PudeukoService {
     await DropboxStorage.write(pudeuko);
   }
 
-  private static mapTextToItem(text: string): PudeukoItem {
+  private static simpleItemFromText(text: string): PudeukoItem {
+    const url: (string | undefined) = getUrls(text).values().next().value;
+    const link: (PudeukoLink | undefined) = url ? { url } : undefined;
+
     return {
       id: nanoid(),
-      createdAt: new Date(),
       text,
+      link,
+      createdAt: new Date(),
     };
   }
 }
