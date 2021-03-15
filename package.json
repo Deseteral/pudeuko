@@ -40,7 +40,8 @@
         "error",
         120
       ],
-      "@typescript-eslint/explicit-function-return-type": "error"
+      "@typescript-eslint/explicit-function-return-type": "error",
+      "max-classes-per-file": "off"
     }
   }
 }
