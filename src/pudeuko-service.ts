@@ -1,5 +1,7 @@
+import cheerio from 'cheerio';
 import getUrls from 'get-urls';
 import { nanoid } from 'nanoid';
+import fetch from 'node-fetch';
 import DropboxStorage from './dropbox-storage';
 import { PudeukoItem, PudeukoLink, PudeukoObject } from './model';
 
@@ -30,6 +32,12 @@ class PudeukoService {
     const pudeuko = await DropboxStorage.read();
     pudeuko.items.unshift(item);
     await DropboxStorage.write(pudeuko);
+
+    try {
+      this.enrichItem(item.id);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   static async removeItem(itemId: string): Promise<void> {
@@ -52,6 +60,29 @@ class PudeukoService {
       link,
       createdAt: new Date(),
     };
+  }
+
+  private static async enrichItem(itemId: string): Promise<void> {
+    const pudeuko = await this.getPudeuko();
+    const index = pudeuko.items.findIndex((it) => it.id === itemId);
+
+    if (index === -1) return;
+
+    const item = pudeuko.items[index];
+
+    if (!item.link) return;
+    if (!item.text.startsWith('http') || item.text.split(' ').length > 1) return;
+
+    const response = await fetch(item.link.url);
+    if (!response.ok) return;
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+
+    item.text = $('title').text();
+
+    pudeuko.items[index] = item;
+    DropboxStorage.write(pudeuko);
   }
 }
 
