@@ -14,11 +14,14 @@ class PudeukoController {
     this.router.prefix('/pudeuko');
     this.router.get('/', PudeukoController.getPudeuko);
     this.router.post('/', PudeukoController.addItem);
+    this.router.get('/:id', PudeukoController.getItem);
   }
 
   private static async getPudeuko(ctx: Context): Promise<void> {
     try {
-      ctx.body = await PudeukoService.getPudeuko();
+      const pudeuko = await PudeukoService.getPudeuko();
+
+      ctx.body = pudeuko;
       ctx.status = 200;
     } catch (e) {
       console.error(e);
@@ -34,6 +37,24 @@ class PudeukoController {
     try {
       await PudeukoService.addItemFromText(content.text);
       ctx.status = 200;
+    } catch (e) {
+      console.error(e);
+      ctx.status = 500;
+    }
+  }
+
+  private static async getItem(ctx: Context): Promise<void> {
+    const itemId = ctx.params.id;
+
+    try {
+      const item = await PudeukoService.getItem(itemId);
+
+      if (item) {
+        ctx.body = item;
+        ctx.status = 200;
+      } else {
+        ctx.status = 404;
+      }
     } catch (e) {
       console.error(e);
       ctx.status = 500;

@@ -7,6 +7,11 @@ class PudeukoService {
     return DropboxStorage.read();
   }
 
+  static async getItem(itemId: string): Promise<PudeukoItem | undefined> {
+    const pudeuko = await DropboxStorage.read();
+    return pudeuko.items.find((item) => item.id === itemId);
+  }
+
   static async addItemFromText(text: string): Promise<void> {
     const item = this.mapTextToItem(text);
 
