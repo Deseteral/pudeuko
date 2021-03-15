@@ -2,6 +2,10 @@ import Router from '@koa/router';
 import { Context } from 'koa';
 import { PudeukoService } from './pudeuko-service';
 
+interface ContentDTO {
+  text: string,
+}
+
 class PudeukoController {
   private router: Router;
 
@@ -9,10 +13,31 @@ class PudeukoController {
     this.router = new Router();
     this.router.prefix('/pudeuko');
     this.router.get('/', PudeukoController.getPudeuko);
+    this.router.post('/', PudeukoController.addItem);
   }
 
   private static async getPudeuko(ctx: Context): Promise<void> {
-    ctx.body = await PudeukoService.getPudeuko();
+    try {
+      ctx.body = await PudeukoService.getPudeuko();
+      ctx.status = 200;
+    } catch (e) {
+      console.error(e);
+      ctx.status = 500;
+    }
+  }
+
+  private static async addItem(ctx: Context): Promise<void> {
+    const content: ContentDTO = ctx.request.body;
+
+    ctx.body = '';
+
+    try {
+      await PudeukoService.addItemFromText(content.text);
+      ctx.status = 200;
+    } catch (e) {
+      console.error(e);
+      ctx.status = 500;
+    }
   }
 
   getRouter(): Router {

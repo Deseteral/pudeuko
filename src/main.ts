@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 import { loadConfigFromEnv } from './config';
 import PudeukoController from './pudeuko-controller';
 
@@ -8,6 +9,7 @@ const config = loadConfigFromEnv();
 const pudeukoController = new PudeukoController();
 
 app
+  .use(bodyParser())
   .use(pudeukoController.getRouter().routes())
   .use(pudeukoController.getRouter().allowedMethods())
   .listen(config.port, () => {
