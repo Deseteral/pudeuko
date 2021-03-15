@@ -33,6 +33,8 @@ class PudeukoService {
     pudeuko.items.unshift(item);
     await DropboxStorage.write(pudeuko);
 
+    console.log(`Added new pudeuko item with id ${item.id}`);
+
     try {
       this.enrichItem(item.id);
     } catch (e) {
@@ -48,6 +50,8 @@ class PudeukoService {
 
     pudeuko.items.splice(index, 1);
     await DropboxStorage.write(pudeuko);
+
+    console.log(`Removed pudeuko item with id ${itemId}`);
   }
 
   private static simpleItemFromText(text: string): PudeukoItem {
@@ -83,6 +87,8 @@ class PudeukoService {
 
     pudeuko.items[index] = item;
     DropboxStorage.write(pudeuko);
+
+    console.log(`Enriched data for pudeuko item with id ${itemId}`);
   }
 }
 
