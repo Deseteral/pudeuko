@@ -1,5 +1,5 @@
 # pudeuko
-[![Build Status](https://travis-ci.org/Deseteral/pudeuko.svg?branch=master)](https://travis-ci.org/Deseteral/pudeuko)
+![Build Status](https://github.com/Deseteral/pudeuko/workflows/Build/badge.svg)
 
 REST service for storing internet things (or... links 🤔) you wish to check out later.
 
