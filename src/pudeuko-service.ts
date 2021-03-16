@@ -43,16 +43,19 @@ class PudeukoService {
     }
   }
 
-  static async removeItem(itemId: string): Promise<void> {
+  static async archiveItem(itemId: string): Promise<void> {
     const pudeuko = await DropboxStorage.read();
     const index = pudeuko.items.findIndex((item) => item.id === itemId);
 
     if (index === -1) throw new PudeukoItemNotFoundError(itemId);
 
+    const item = pudeuko.items[index];
     pudeuko.items.splice(index, 1);
+    pudeuko.archive.unshift(item);
+
     await DropboxStorage.write(pudeuko);
 
-    console.log(`Removed pudeuko item with id ${itemId}`);
+    console.log(`Archived pudeuko item with id ${itemId}`);
   }
 
   private static simpleItemFromText(text: string): PudeukoItem {

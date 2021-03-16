@@ -1,5 +1,6 @@
 interface PudeukoObject {
   items: PudeukoItem[],
+  archive: PudeukoItem[],
 }
 
 interface PudeukoLink {

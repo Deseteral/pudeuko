@@ -70,7 +70,7 @@ class PudeukoController {
     const itemId = ctx.params.id;
 
     try {
-      await PudeukoService.removeItem(itemId);
+      await PudeukoService.archiveItem(itemId);
       ctx.status = STATUS_NO_CONTENT;
     } catch (e) {
       console.error(e);
