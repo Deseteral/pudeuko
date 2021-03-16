@@ -64,11 +64,13 @@ class PudeukoService {
   private static simpleItemFromText(text: string): PudeukoItem {
     const url: (string | undefined) = getUrls(text).values().next().value;
     const link: (PudeukoLink | undefined) = url ? { url } : undefined;
+    const icon = url ? { src: `${new URL(url).origin}/favicon.ico` } : undefined;
 
     return {
       id: nanoid(),
       text,
       link,
+      icon,
       createdAt: new Date(),
     };
   }
@@ -94,10 +96,6 @@ class PudeukoService {
       .text()
       .split('\n')
       .join('');
-
-    item.icon = {
-      src: `${new URL(item.link.url).origin}/favicon.ico`,
-    };
 
     pudeuko.items[index] = item;
     DropboxStorage.write(pudeuko);
