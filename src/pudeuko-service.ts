@@ -90,7 +90,11 @@ class PudeukoService {
     const html = await response.text();
     const $ = cheerio.load(html);
 
-    item.text = $('title').text();
+    item.text = $('title')
+      .text()
+      .split('\n')
+      .join('');
+
     item.icon = {
       src: `${new URL(item.link.url).origin}/favicon.ico`,
     };
