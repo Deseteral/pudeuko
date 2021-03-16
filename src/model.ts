@@ -6,11 +6,16 @@ interface PudeukoLink {
   url: string,
 }
 
+interface PudeukoIcon {
+  src: string,
+}
+
 interface PudeukoItem {
   id: string,
-  createdAt: Date,
-  link?: PudeukoLink,
   text: string,
+  link?: PudeukoLink,
+  icon?: PudeukoIcon,
+  createdAt: Date,
 }
 
 export {

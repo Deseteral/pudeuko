@@ -2,6 +2,7 @@ import cheerio from 'cheerio';
 import getUrls from 'get-urls';
 import { nanoid } from 'nanoid';
 import fetch from 'node-fetch';
+import { URL } from 'url';
 import DropboxStorage from './dropbox-storage';
 import { PudeukoItem, PudeukoLink, PudeukoObject } from './model';
 
@@ -84,6 +85,9 @@ class PudeukoService {
     const $ = cheerio.load(html);
 
     item.text = $('title').text();
+    item.icon = {
+      src: `${new URL(item.link.url).origin}/favicon.ico`,
+    };
 
     pudeuko.items[index] = item;
     DropboxStorage.write(pudeuko);
