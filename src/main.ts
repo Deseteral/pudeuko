@@ -1,8 +1,10 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { loadConfigFromEnv } from './config';
+import Logger from './logger';
 import PudeukoController from './pudeuko-controller';
 
+const logger = new Logger('Main');
 const app = new Koa();
 const config = loadConfigFromEnv();
 
@@ -13,5 +15,5 @@ app
   .use(pudeukoController.getRouter().routes())
   .use(pudeukoController.getRouter().allowedMethods())
   .listen(config.port, () => {
-    console.log(`pudeuko started on port ${config.port}`);
+    logger.info(`pudeuko started on port ${config.port}`);
   });

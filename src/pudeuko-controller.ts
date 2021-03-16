@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 import { Context } from 'koa';
+import Logger from './logger';
 import { PudeukoItemNotFoundError, PudeukoService } from './pudeuko-service';
 
 const STATUS_OK = 200;
@@ -13,6 +14,7 @@ interface ContentDTO {
 
 class PudeukoController {
   private router: Router;
+  private static logger = new Logger('PudeukoController');
 
   constructor() {
     this.router = new Router();
@@ -30,7 +32,7 @@ class PudeukoController {
       ctx.body = pudeuko;
       ctx.status = STATUS_OK;
     } catch (e) {
-      console.error(e);
+      PudeukoController.logger.withError(e);
       ctx.status = STATUS_INTERNAL_SERVER_ERROR;
     }
   }
@@ -42,7 +44,7 @@ class PudeukoController {
       await PudeukoService.addItemFromText(content.text);
       ctx.status = STATUS_OK;
     } catch (e) {
-      console.error(e);
+      PudeukoController.logger.withError(e);
       ctx.status = STATUS_INTERNAL_SERVER_ERROR;
     }
   }
@@ -56,7 +58,7 @@ class PudeukoController {
       ctx.body = item;
       ctx.status = STATUS_OK;
     } catch (e) {
-      console.error(e);
+      PudeukoController.logger.withError(e);
 
       if (e instanceof PudeukoItemNotFoundError) {
         ctx.status = STATUS_NOT_FOUND;
@@ -73,7 +75,7 @@ class PudeukoController {
       await PudeukoService.archiveItem(itemId);
       ctx.status = STATUS_NO_CONTENT;
     } catch (e) {
-      console.error(e);
+      PudeukoController.logger.withError(e);
 
       if (e instanceof PudeukoItemNotFoundError) {
         ctx.status = STATUS_NOT_FOUND;

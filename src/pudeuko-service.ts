@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 import fetch from 'node-fetch';
 import { URL } from 'url';
 import DropboxStorage from './dropbox-storage';
+import Logger from './logger';
 import { PudeukoItem, PudeukoLink, PudeukoObject } from './model';
 
 class PudeukoItemNotFoundError extends Error {
@@ -14,6 +15,8 @@ class PudeukoItemNotFoundError extends Error {
 }
 
 class PudeukoService {
+  private static logger = new Logger('PudeukoService');
+
   static async getPudeuko(): Promise<PudeukoObject> {
     return DropboxStorage.read();
   }
@@ -34,12 +37,12 @@ class PudeukoService {
     pudeuko.items.unshift(item);
     await DropboxStorage.write(pudeuko);
 
-    console.log(`Added new pudeuko item with id ${item.id}`);
+    PudeukoService.logger.info(`Added new pudeuko item with id ${item.id}`);
 
     try {
       this.enrichItem(item.id);
     } catch (e) {
-      console.error(e);
+      PudeukoService.logger.withError(e);
     }
   }
 
@@ -55,7 +58,7 @@ class PudeukoService {
 
     await DropboxStorage.write(pudeuko);
 
-    console.log(`Archived pudeuko item with id ${itemId}`);
+    PudeukoService.logger.info(`Archived pudeuko item with id ${itemId}`);
   }
 
   private static simpleItemFromText(text: string): PudeukoItem {
@@ -95,7 +98,7 @@ class PudeukoService {
     pudeuko.items[index] = item;
     DropboxStorage.write(pudeuko);
 
-    console.log(`Enriched data for pudeuko item with id ${itemId}`);
+    PudeukoService.logger.info(`Enriched data for pudeuko item with id ${itemId}`);
   }
 }
 
