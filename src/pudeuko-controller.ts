@@ -23,6 +23,7 @@ class PudeukoController {
     this.router.post('/', PudeukoController.addItem);
     this.router.get('/:id', PudeukoController.getItem);
     this.router.delete('/:id', PudeukoController.removeItem);
+    this.router.post('/reenrich', PudeukoController.reenrichItems);
   }
 
   private static async getPudeuko(ctx: Context): Promise<void> {
@@ -83,6 +84,10 @@ class PudeukoController {
         ctx.status = STATUS_INTERNAL_SERVER_ERROR;
       }
     }
+  }
+
+  private static async reenrichItems(_ctx: Context): Promise<void> {
+    PudeukoService.reenrichItems();
   }
 
   getRouter(): Router {

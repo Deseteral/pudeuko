@@ -61,16 +61,20 @@ class PudeukoService {
     PudeukoService.logger.info(`Archived pudeuko item with id ${itemId}`);
   }
 
+  static async reenrichItems(): Promise<void> {
+    const pudeuko = await DropboxStorage.read();
+    await Promise.all(pudeuko.items.map((item) => PudeukoService.enrichItem(item.id)));
+  }
+
   private static simpleItemFromText(text: string): PudeukoItem {
     const url: (string | undefined) = getUrls(text).values().next().value;
     const link: (PudeukoLink | undefined) = url ? { url } : undefined;
-    const icon = url ? { src: `${new URL(url).origin}/favicon.ico` } : undefined;
 
     return {
       id: nanoid(),
       text,
       link,
-      icon,
+      icon: undefined,
       createdAt: new Date(),
     };
   }
@@ -80,22 +84,24 @@ class PudeukoService {
     const index = pudeuko.items.findIndex((it) => it.id === itemId);
 
     if (index === -1) return;
-
     const item = pudeuko.items[index];
 
     if (!item.link) return;
-    if (!item.text.startsWith('http') || item.text.split(' ').length > 1) return;
 
     const response = await fetch(item.link.url);
-    if (!response.ok) return;
+    if (response.ok) {
+      const html = await response.text();
+      const $ = cheerio.load(html);
 
-    const html = await response.text();
-    const $ = cheerio.load(html);
+      const htmlTitle = $('title').text();
+      if (htmlTitle.length > 0) {
+        item.text = htmlTitle.split('\n').join('');
+      }
+    }
 
-    item.text = $('title')
-      .text()
-      .split('\n')
-      .join('');
+    item.icon = item.link
+      ? { src: `https://www.google.com/s2/favicons?sz=64&domain=${encodeURIComponent(new URL(item.link.url).origin)}` }
+      : undefined;
 
     pudeuko.items[index] = item;
     DropboxStorage.write(pudeuko);
